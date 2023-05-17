@@ -1,0 +1,21 @@
+The issue is that the playsound function blocks the main thread until the sound has finished playing. This means that the rest of your script cannot continue until the sound has finished.
+
+To fix this, you can use the threading module to start a new thread to play the sound. This will allow the main thread to continue executing while the sound is playing.
+
+from playsound import playsound
+from threading import Thread
+
+def play_sound(file_path):
+  playsound(file_path)
+
+print('playing sound')
+
+# Start a new thread to play the sound
+thread = Thread(target=play_sound, args=('./assets/sounds/System Sounds/button-beep.mp3'))
+thread.start()
+
+# Wait for the thread to finish
+thread.join()
+
+print('played sound')
+This will allow your script to continue executing while the sound is playing. You will still be able to use CTRL+C to exit the script, even while the sound is playing.
